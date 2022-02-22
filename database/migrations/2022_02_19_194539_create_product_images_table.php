@@ -15,14 +15,14 @@ class CreateProductImagesTable extends Migration
     {
         Schema::create('product_images', function (Blueprint $table) {
             $table->id();
-            $table->string('img');  //поле для картинки
-            $table->bigInteger('product_id')->unsigned();  //поле  с id продуктом  для ключа //unsigned() - без знаковое поле
+            $table->string('img');
+            $table->bigInteger('product_id')->unsigned();
             $table->timestamps();
 
             $table->foreign('product_id')
                 ->references('id')
                 ->on('products')
-                ->onDelete('cascade'); //onDelete('cascade') - чтобы картинки удалялись вместе с продуктом
+                ->onDelete('cascade');
 
         });
     }

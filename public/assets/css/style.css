@@ -1828,7 +1828,7 @@ h3.ghj {
 	margin-top:3%;
 }
 .table tr th {
-    width: 50%;
+    width: 45%;
 }
 /*--end-typo--*/
 /*--starts-register--*/
@@ -3067,3 +3067,22 @@ ul.tag-men {
 }
 }
 /*--media-quaries-end-here--*/
+
+.form-inline form{
+    display: inline;
+}
+.form-inline, .btn:hover{
+   color: #fff;
+
+}
+.order{
+    margin-top: 10%;
+    margin-bottom: 10%;
+    text-align: center;
+
+}
+.order form{
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+}

@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('title');
             $table->float('price');
-            $table->boolean('in_stock'); // если есть товар в наличии будет стоять 1 если нет 0
+            $table->boolean('in_stock');
             $table->text('description');
             $table->timestamps();
 

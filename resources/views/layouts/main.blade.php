@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Luxury Watches | Home</title>
+    <title>@yield('title')</title>
     <link href="/assets/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
     <!--jQuery(necessary for Bootstrap's JavaScript plugins)-->
     <script src="/assets/js/jquery-1.11.0.min.js"></script>
@@ -50,10 +50,10 @@
                 <div class="cart box_1">
                     <a href="{{ route('basket') }}">
                         <div class="total">
-                            <span class="simpleCart_total"></span></div>
+                            <span> </span></div>
                         <img src="/assets/images/cart-1.png" alt="" />
                     </a>
-                    <p><a href="javascript:;" class="simpleCart_empty">Empty Cart</a></p>
+
                     <div class="clearfix"> </div>
                 </div>
             </div>
@@ -109,7 +109,25 @@
     </div>
 </div>
 <!--bottom-header-->
-@yield('content')
+<div>
+    <div class="container">
+        {{--для выведения сообщения о действии--}}
+        @if(session()->has('success'))
+            <div class="alert alert-success">
+                {{ session()->get('success') }}
+            </div>
+        @endif
+        @if(session()->has('warning'))
+            <div class="alert alert-warning">
+                {{ session()->get('warning') }}
+            </div>
+        @endif
+    </div>
+
+
+    @yield('content')
+</div>
+
 
 <!--footer-starts-->
 <!--information-starts-->

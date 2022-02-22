@@ -1,99 +1,72 @@
 @extends('layouts.main')
 
-@section('title', 'Basket')
-
+@section('title', 'basket')
 
 @section('content')
-    <div class="breadcrumbs">
-        <div class="container">
-            <div class="breadcrumbs-main">
-                <ol class="breadcrumb">
-                    <li><a href="index.html">Home</a></li>
-                    <li class="active">Checkout</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-    <!--end-breadcrumbs-->
-    <!--start-ckeckout-->
-    <div class="ckeckout">
-        <div class="container">
-            <div class="ckeck-top heading">
-                <h2>CHECKOUT</h2>
-            </div>
-            <div class="ckeckout-top">
-                <div class="cart-items">
-                    <h3>My Shopping Bag (3)</h3>
-                    <script>$(document).ready(function(c) {
-                            $('.close1').on('click', function(c){
-                                $('.basket-header').fadeOut('slow', function(c){
-                                    $('.basket-header').remove();
-                                });
-                            });
-                        });
-                    </script>
-                    <script>$(document).ready(function(c) {
-                            $('.close2').on('click', function(c){
-                                $('.basket-header1').fadeOut('slow', function(c){
-                                    $('.basket-header1').remove();
-                                });
-                            });
-                        });
-                    </script>
-                    <script>$(document).ready(function(c) {
-                            $('.close3').on('click', function(c){
-                                $('.basket-header2').fadeOut('slow', function(c){
-                                    $('.basket-header2').remove();
-                                });
-                            });
-                        });
-                    </script>
 
-                    <div class="in-check" >
-                        <ul class="unit">
-                            <li><span>Item</span></li>
-                            <li><span>Product Name</span></li>
-                            <li><span>Unit Price</span></li>
-                            <li><span>Delivery Details</span></li>
-                            <li> </li>
-                            <div class="clearfix"> </div>
-                        </ul>
-                        <ul class="cart-header">
-                            <div class="close1"> </div>
-                            <li class="ring-in"><a href="single.html" ><img src="images/c-1.jpg" class="img-responsive" alt=""></a>
-                            </li>
-                            <li><span class="name">Analog Watches</span></li>
-                            <li><span class="cost">$ 290.00</span></li>
-                            <li><span>Free</span>
-                                <p>Delivered in 2-3 business days</p></li>
-                            <div class="clearfix"> </div>
-                        </ul>
-                        <ul class=" cart-header1">
-                            <div class="close2"> </div>
-                            <li class="ring-in"><a href="single.html" ><img src="images/c-2.jpg" class="img-responsive" alt=""></a>
-                            </li>
-                            <li><span class="name">Analog Watches</span></li>
-                            <li><span class="cost">$ 300.00</span></li>
-                            <li><span>Free</span>
-                                <p>Delivered in 2-3 business days</p></li>
-                            <div class="clearfix"> </div>
-                        </ul>
-                        <ul class="cart-header2">
-                            <div class="close3"> </div>
-                            <li class="ring-in"><a href="single.html" ><img src="images/c-3.jpg" class="img-responsive" alt=""></a>
-                            </li>
-                            <li><span class="name">Analog Watches</span></li>
-                            <li><span class="cost">$ 360.00</span></li>
-                            <li><span>Free</span>
-                                <p>Delivered in 2-3 business days</p></li>
-                            <div class="clearfix"> </div>
-                        </ul>
-                    </div>
+    <div class="container">
+        <h2 class="basket_text">Корзина</h2>
+        <p class="basket_text">Оформление Заказа</p>
+        <div class="panel">
+            <table class="table table-striped">
+                <thead>
+                <tr scope="row">
+                    <th>Название товара</th>
+                    <th>Количество</th>
+                    <th>Цена</th>
+                    <th>Стоимость</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                @foreach($order->products as $product)
+                    <tr>
+                        <td>
+                            {{--ссылка на товар --}}
+                            <a href="{{ route('showProduct', ['catalog', $product->id]) }}">
+                                <img height="56px" src="">
+                                {{ $product->title }}
+                            </a>
+                        </td>
+
+                        <td><span class="badge"> {{ $product->pivot->count }} </span>
+                            <div class="btn-group form-inline">
+                                {{--  добавление в корзину--}}
+                                <form action="{{ route('basketRemove', $product) }}" method="POST">
+                                    <button type="submit" class="btn btn-danger"><span
+                                            class="glyphicon glyphicon-minus" aria-hidden="true"></span></button>
+                                    @csrf
+                                </form>
+                                {{--  удаление из корзины--}}
+                                <form action="{{ route('basketAdd', $product) }}" method="POST">
+                                    <button type="submit" class="btn btn-dark"><span
+                                            class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+                                    @csrf
+                                </form>
+                            </div>
+                        </td>
+                        <td class="col-lg-2">$ {{ $product->price }}</td>
+                        <td>$ {{ $product->getPrice() }}</td>
+                        {{--  считает сумму одного продукта  --}}
+                    </tr>
+                @endforeach
+                <tr>
+                    <td colspan="3">Общая стоимость:</td>
+                    {{--  считает общую сумму всей корзины  --}}
+                    <td>$ {{ $order->getFullPrice() }} </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class="row">
+                <div class="form-inline pull-right">
+                    <form method="POST" action="">
+                        <a href="{{ route('basketOrder') }}" type="submit" class="btn btn-success">Оформить заказ</a>
+                    </form>
                 </div>
             </div>
         </div>
-    </div>
-    <!--end-ckeckout-->
+
 
 
 @endsection

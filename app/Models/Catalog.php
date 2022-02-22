@@ -18,7 +18,8 @@ class Catalog extends Model
 
     ];
 
-    public function products() //один ко многим
+    //один ко многим
+    public function products()
     {
         return $this->hasMany(Product::class);
     }

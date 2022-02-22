@@ -19,13 +19,23 @@ class Product extends Model
         'description'
     ];
 
-    public function images() //один ко многим
+//один ко многим
+    public function images()
     {
         return $this->hasMany(ProductImage::class);
     }
 
-    public function catalog() //один ко многим
+//один ко многим
+    public function catalog()
     {
         return $this->belongsTo(Catalog::class, 'catalog_id');
+    }
+
+    public function getPrice()
+    {
+        if (!is_null($this->pivot)) {
+            return $this->pivot->count * $this->price;
+        }
+        return $this->price;
     }
 }
