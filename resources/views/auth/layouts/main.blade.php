@@ -8,17 +8,20 @@
     <!--Custom-Theme-files-->
     <!--theme-style-->
     <link href="/assets/css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="/assets/css/app.css" rel="stylesheet" type="text/css" media="all" />
     <!--//theme-style-->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!--start-menu-->
+
     <script src="/assets/js/simpleCart.min.js"> </script>
     <link href="/assets/css/memenu.css" rel="stylesheet" type="text/css" media="all" />
     <script type="text/javascript" src="/assets/js/memenu.js"></script>
     <script>$(document).ready(function(){$(".memenu").memenu();});</script>
     <!--dropdown-->
     <script src="/assets/js/jquery.easydropdown.js"></script>
+{{--    <script type="text/javascript" src="/assets/js/app.js"></script>--}}
     @yield('custom_js')
 </head>
 <body>
@@ -47,37 +50,17 @@
                 </div>
             </div>
             <div class="col-md-6 top-header-left">
-          <div class="col-md-6">
-              <ul class="nav navbar-nav navbar-right">
-{{--                  если мы не зарегестрированны--}}
-                  @guest
-                      <li><a href="{{ route('login') }}">Панель администратора</a></li>
-                  @endguest
+                <div class="cart box_1">
+                    <a href="{{ route('basket') }}">
+                        <div class="total">
+{{--                            Общая сумма в корзине--}}
+{{--                            <span> $ {{ $order->getFullPrice()}}</span>--}}
+                            <span> </span></div>
+                        <img src="/assets/images/cart-1.png" alt="" />
+                    </a>
 
-{{--                  если мы зарегистрированны--}}
-                  @auth
-                      <li><a href="{{ route('home') }}">Панель администратора</a></li>
-                      <li><a href="{{ route('getLogout') }}">Выйти</a></li>
-                  @endauth
-              </ul>
-          </div>
-
-                <div class="col-md-6">
-                    {{-- корзина--}}
-                    <div class="cart box_1">
-                        <a href="{{ route('basket') }}">
-                            <div class="total">
-                                {{--  Общая сумма в корзине--}}
-                                {{--  <span> $ {{ $order->getFullPrice()}}</span>--}}
-                                <span> </span></div>
-                            <img src="/assets/images/cart-1.png" alt="" />
-                        </a>
-
-                        <div class="clearfix"> </div>
-                    </div>
+                    <div class="clearfix"> </div>
                 </div>
-
-
             </div>
             <div class="clearfix"></div>
         </div>
@@ -94,6 +77,7 @@
     <div class="container">
         <div class="header">
             <div class="col-md-9 header-left">
+
                 <div class="top-nav">
                     <ul class="memenu skyblue"><li class="active"><a href="{{ route('indexController') }}">Home</a></li>
                         <li class="grid"><a href="#">Catalog</a>
@@ -116,39 +100,78 @@
 
                         <li class="grid"><a href="{{ route('contact') }}">Contact</a>
                         </li>
+                        <li class="grid"><a href="">Orders</a></li>
                     </ul>
                 </div>
                 <div class="clearfix"> </div>
             </div>
             <div class="col-md-3 header-right">
-                <div class="search-bar">
-                    <input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}">
-                    <input type="submit" value="">
-                </div>
+
+
+{{--                <div class="search-bar">--}}
+{{--                    <input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}">--}}
+{{--                    <input type="submit" value="">--}}
+{{--                </div>--}}
+
+                @guest
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login') }}">Войти</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route ('register') }}">Зарегистрироваться</a>
+                        </li>
+                    </ul>
+                @endguest
+                @auth
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="nav-item">
+                            <a  href="#" >
+                                Administrator
+                            </a>
+
+                            <div>
+                                <a  href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                  Exit
+                                </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                      style="display: none;">
+                                    @csrf
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                @endauth
+
+
             </div>
+
             <div class="clearfix"> </div>
         </div>
     </div>
 </div>
 <!--bottom-header-->
-<div>
-    <div class="container">
-        {{--для выведения сообщения о действии--}}
-        @if(session()->has('success'))
-            <div class="alert alert-success">
-                {{ session()->get('success') }}
-            </div>
-        @endif
-        @if(session()->has('warning'))
-            <div class="alert alert-warning">
-                {{ session()->get('warning') }}
-            </div>
-        @endif
-    </div>
+
+{{--    <div class="container">--}}
+{{--        --}}{{--для выведения сообщения о действии--}}
+{{--        @if(session()->has('success'))--}}
+{{--            <div class="alert alert-success">--}}
+{{--                {{ session()->get('success') }}--}}
+{{--            </div>--}}
+{{--        @endif--}}
+{{--        @if(session()->has('warning'))--}}
+{{--            <div class="alert alert-warning">--}}
+{{--                {{ session()->get('warning') }}--}}
+{{--            </div>--}}
+{{--        @endif--}}
+{{--    </div>--}}
 
 
+<div class="container">
     @yield('content')
 </div>
+
 
 
 <!--footer-starts-->

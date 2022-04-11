@@ -18,12 +18,14 @@ class Order extends Model
         'phone',
     ];
 
+
     public function products()
     {
         return $this->belongsToMany(Product::class)->withPivot('count')->withTimestamps();
+
     }
 
-    //  подсчет полной стоимости корзины
+    //    Здесь мы получаем подсчет полной стоимости корзины
     public function getFullPrice()
     {
         $sum = 0;
@@ -33,6 +35,7 @@ class Order extends Model
         return $sum;
     }
 
+    // далее прописываем этот метод в контроллере BasketController в методе  public function basketConfirm(Request $request)
     public function saveOrder($name, $phone)
     {
        if ($this->status == 0){

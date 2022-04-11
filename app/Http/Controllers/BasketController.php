@@ -6,9 +6,8 @@ use App\Models\Product;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
-class BasketController
+class BasketController extends Controller
 {
-
     public function basket()
     {
         $orderId = session('orderId');
@@ -23,13 +22,12 @@ class BasketController
         $orderId = session('orderId');
         if (is_null($orderId)) {
             $order = Order::create();
-
             session(['orderId' => $order->id]);
         } else {
             $order = Order::find($orderId);
         }
 
-// Колонка количество товара count. Добавление товара.
+// Колонка количество товара count. Добавление товара. В модели ордер дописываем ->withPivot('count')->withTimestamps();
         if ($order->products->contains($product_id)) {
             $pivotRow = $order->products()->where('product_id', $product_id)->first()->pivot;
             $pivotRow->count++;
@@ -40,10 +38,11 @@ class BasketController
 
         //надпись о добавлении товара
         $product = Product::find($product_id);
-        session()->flash('success', 'Добавлен товар: ' . $product->title);
+        session()->flash('success', 'Product added: ' . $product->title);
 
         return redirect()->route('basket');
     }
+
 
     public function basketRemove($product_id)
     {
@@ -53,7 +52,7 @@ class BasketController
         }
         $order = Order::find($orderId);
 
-        // Колонка количество товара count. Удаление товара.
+        //  Колонка количество товара count. Удаление товара.
         if ($order->products->contains($product_id)) {
             $pivotRow = $order->products()->where('product_id', $product_id)->first()->pivot;
             if ($pivotRow->count < 2) {
@@ -66,8 +65,7 @@ class BasketController
 
         //Сообщение о удалении товара из корзины
         $product = Product::find($product_id);
-        session()->flash('warning', 'Удален товар из корзины: ' . $product->title);
-
+        session()->flash('warning', 'Item removed from cart: ' . $product->title);
         return redirect()->route('basket');
 
     }
@@ -86,12 +84,10 @@ class BasketController
 
     public function basketConfirm(Request $request)
     {
-
         //ВАЛИДАЦИЯ
         $request->validate([
             'name' => 'required',
             'phone' => 'required',
-
         ]);
 
         $orderId = session('orderId');
@@ -102,12 +98,13 @@ class BasketController
 
         $success = $order->saveOrder($request->name, $request->phone);
 
+        //Сообщение о принятии товара на обработку
+
         if (!isset($success)) {
-            session()->flash('success', 'Ваш заказ принят в обработку!');
+            session()->flash('success', 'Your order has been processed!');
         }
 
         return redirect()->route('indexController');
     }
-
 
 }

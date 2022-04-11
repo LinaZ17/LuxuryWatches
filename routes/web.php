@@ -1,9 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\BasketController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\BasketController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,9 +18,22 @@ use App\Http\Controllers\BasketController;
 |
 */
 
-//Route::get('/', function () {
-//    return view('welcome');
-//});
+
+Auth::routes([
+    'reset'=>'false',
+    'confirm'=>'false',
+    'verify'=>'false'
+]);
+
+
+Route::get('/logout', ' Auth\LoginController@logout ')->name('getLogout');
+
+Route::group(['middleware' => 'auth',
+    'namespace' => 'Admin'
+], function (){
+    Route::get('/orders', [OrderController::class, 'index'])->name('home');
+});
+
 
 Route::get('/', [IndexController::class, 'index'])->name('indexController');
 Route::get('/catalog{catalog}', [ProductController::class, 'showCatalog'])->name('showCatalog');
@@ -29,4 +44,8 @@ Route::get('/basket/order', [BasketController::class, 'basketOrder'])->name('bas
 Route::post('/basket/add/{id}', [BasketController::class, 'basketAdd'])->name('basketAdd');
 Route::post('/basket/remove/{id}', [BasketController::class, 'basketRemove'])->name('basketRemove');
 Route::post('/basket/order', [BasketController::class, 'basketConfirm'])->name('basketConfirm');
+
+Route::get('/contact', [ContactController::class, 'contact'])->name('contact');
+Route::get('/contactEmail', [ContactController::class, 'contactEmail'])->name('contactEmail');
+
 
