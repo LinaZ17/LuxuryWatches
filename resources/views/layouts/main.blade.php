@@ -51,13 +51,13 @@
               <ul class="nav navbar-nav navbar-right">
 {{--                  если мы не зарегестрированны--}}
                   @guest
-                      <li><a href="{{ route('login') }}">Панель администратора</a></li>
+                      <li><a href="{{ route('login') }}">Admin panel</a></li>
                   @endguest
 
 {{--                  если мы зарегистрированны--}}
                   @auth
-                      <li><a href="{{ route('home') }}">Панель администратора</a></li>
-                      <li><a href="{{ route('getLogout') }}">Выйти</a></li>
+                      <li><a href="{{ route('home') }}">Admin panel</a></li>
+                      <li><a href="{{ route('getLogout') }}">Exit</a></li>
                   @endauth
               </ul>
           </div>
